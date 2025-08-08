@@ -9,4 +9,4 @@ permissions:
   contents: read
 jobs:
   trigger-remote:
-    uses: testid1/ConjurModules/.github/workflows/testconjurmodules.yaml@v1.0.1-rc1
+    uses: testid1/ConjurModules/.github/workflows/testconjurmodules.yaml@main
