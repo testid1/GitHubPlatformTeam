@@ -9,23 +9,4 @@ permissions:
   contents: read
 jobs:
   trigger-remote:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gh jq
-
-      - name: Authenticate GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-        run: |
-          echo $GH_TOKEN | gh auth login --with-token
-
-      - name: TriggerConjurRetreival
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-        run: |
-          gh workflow run testconjurmodules.yaml \
-            --repo testid1/ConjurModules/ \
-            --ref main \
+    uses: testid1/ConjurModules/.github/workflows/testconjurmodules.yaml@v1.0.1-rc1
