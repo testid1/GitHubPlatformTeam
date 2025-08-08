@@ -12,17 +12,21 @@ jobs:
   trigger-remote:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger_Conjur_Retreival
+      - name: Install GitHub CLI
         run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GH_PAT }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/<owner>/<repo>/actions/workflows/<workflow_file_name>/dispatches \
-            -d '{
-              "ref": "main",
-              "inputs": {
-                "environment": "prod",
-                "version": "1.2.3"
-              }
-            }'
+          sudo apt-get update
+          sudo apt-get install -y gh jq
+
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          echo $GH_TOKEN | gh auth login --with-token
+
+      - name: TriggerConjurRetreival
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          gh workflow run testconjurmodules.yaml \
+            --repo testid1/ConjurModules/ \
+            --ref main \
